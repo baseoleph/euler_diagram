@@ -128,7 +128,7 @@
           <item>
            <widget class="QLineEdit" name="lineEdit_d">
             <property name="text">
-             <string/>
+             <string>(a&amp;b)\(c|a)&amp;((a&amp;a)&amp;b)</string>
             </property>
            </widget>
           </item>
@@ -144,6 +144,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_calc">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Вычислить</string>
          </property>

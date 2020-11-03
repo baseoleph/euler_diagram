@@ -439,8 +439,8 @@ void MainWindow::on_lineEdit_d_textChanged(const QString &arg1)
 {
     expression = "(" + arg1.trimmed().simplified().toLower() + ")";
     while (expression.indexOf(" ") != -1) expression.remove(" ");
-    if (isStringCorrect(expression)) ui->statusbar->showMessage("+");
-    else ui->statusbar->showMessage("-");
+    if (isStringCorrect(expression)) ui->pushButton_calc->setEnabled(true);
+    else ui->pushButton_calc->setEnabled(false);
 }
 
 bool MainWindow::isStringCorrect(QString str)
@@ -492,15 +492,71 @@ bool MainWindow::isStringCorrect(QString str)
     return true;
 }
 
-void MainWindow::on_pushButton_calc_clicked()
+QSet<int> MainWindow::evaluate(QString str)
 {
-    eval.clear();
-    if (isStringCorrect(expression))
+    QSet<int> a;
+    QSet<int> b;
+    int p = 0;
+
+    if (str[0] == "%")
     {
-        qDebug() << 0;
+        p = str.indexOf("%", 1);
+        a = eval[str.mid(1, p-1).toInt()];
+        qDebug() << str.mid(1, p-1);
     }
     else
     {
-        qDebug() << 1;
+        if (str[0] == "a") a = A;
+        if (str[0] == "b") a = B;
+        if (str[0] == "c") a = C;
     }
+    if (str.size() == 1) return a;
+
+    if (str[p+2] == "%")
+    {
+        p = str.indexOf("%", p+3);
+        b = eval[str.mid(1, p+1).toInt()];
+        qDebug() << str.mid(1, p+1);
+    }
+    else
+    {
+        if (str[p+2] == "a") b = A;
+        if (str[p+2] == "b") b = B;
+        if (str[p+2] == "c") b = C;
+    }
+
+    qDebug() << str << a << b;
+    if (str.indexOf("&") != -1) return a&b;
+    else if (str.indexOf("|") != -1) return a|b;
+    else if (str.indexOf("\\") != -1) return a-b;
+
+
+    return a;
+}
+
+QSet<int> MainWindow::roll(QString expression)
+{
+    while (expression.indexOf(")") != -1)
+    {
+        int right_par = expression.indexOf(")");
+        int left_par = expression.left(right_par).lastIndexOf("(");
+        int lp = left_par + 1;
+        int rp = right_par - left_par - 1;
+        QString tempstr = expression.mid(lp, rp);
+        eval.append(evaluate(tempstr));
+        qDebug() << "temp " << tempstr << eval;
+        expression = expression.replace(lp-1, rp+2, "%" + QString::number(eval.size()-1) + "%");
+//        qDebug() << expression;
+//        qDebug() << eval;
+//        qDebug() << "--------------";
+    }
+
+
+    return eval.last();
+}
+
+void MainWindow::on_pushButton_calc_clicked()
+{
+    eval.clear();
+    qDebug() << roll(expression);
 }

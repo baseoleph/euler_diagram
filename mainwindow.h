@@ -59,6 +59,8 @@ private:
     QVector<QSet<int>> eval;
 
     bool isStringCorrect(QString str);
+    QSet<int> evaluate(QString str);
+    QSet<int> roll(QString str);
     int categ = 0;
     int cnter = -1;
 };
