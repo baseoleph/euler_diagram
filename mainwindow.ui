@@ -40,7 +40,7 @@
           <item>
            <widget class="QLineEdit" name="lineEdit_a">
             <property name="text">
-             <string>1 5 4 7 8 9 3 2 1 5</string>
+             <string>1</string>
             </property>
            </widget>
           </item>
@@ -67,7 +67,7 @@
           <item>
            <widget class="QLineEdit" name="lineEdit_b">
             <property name="text">
-             <string>2 4 5 6 8 5 7 5 9</string>
+             <string>1</string>
             </property>
            </widget>
           </item>
@@ -94,7 +94,7 @@
           <item>
            <widget class="QLineEdit" name="lineEdit_c">
             <property name="text">
-             <string>11 22 56 4 5 3</string>
+             <string>1</string>
             </property>
            </widget>
           </item>

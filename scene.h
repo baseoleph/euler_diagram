@@ -8,6 +8,7 @@
 #include <QSet>
 #include <QGraphicsEllipseItem>
 #include <QtMath>
+#include <QRandomGenerator>
 
 
 class Scene : public QGraphicsScene
@@ -20,9 +21,18 @@ public:
     void setCircles(QSet<int> A, QSet<int> B, QSet<int> C, int categ);
     void putOneRelatOther(QGraphicsEllipseItem *one, const QGraphicsEllipseItem *oth,
                           QSet<int> set_one, const QSet<int> set_oth);
+
+signals:
+    void signalForMoveText();
+
 private:
+    void moveText();
     int categ;
     int cell;
+    int mainwidth;
+    QGraphicsTextItem *At;
+    QGraphicsTextItem *Bt;
+    QGraphicsTextItem *Ct;
     QGraphicsEllipseItem *Ael;
     QGraphicsEllipseItem *Bel;
     QGraphicsEllipseItem *Cel;
@@ -45,6 +55,11 @@ private:
     void cat14();
     void cat15();
     void cat16();
+
+
+    int mainx;
+    int mainy;
+    int mainshift;
 };
 
 #endif // SCENE_H

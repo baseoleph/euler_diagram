@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QKeyEvent>
+#include <QResizeEvent>
 
 #include "scene.h"
 
@@ -25,6 +26,7 @@ public:
     void swap(QSet<int> &a, QSet<int> &b);
 
 private slots:
+    void resizeEvent(QResizeEvent* event);
     void keyPressEvent(QKeyEvent *event);
     void setUpScene();
     void on_pushButton_clicked();
@@ -36,6 +38,8 @@ private slots:
     void on_lineEdit_c_textChanged(const QString &arg1);
 
 private:
+    void updateTestSets();
+    void getTests();
     Scene *scene;
     QTimer *tm;
     void updateSets();
