@@ -49,5 +49,6 @@ private:
     QStringList cline;
 
     int categ = 0;
+    int cnter = -1;
 };
 #endif // MAINWINDOW_H

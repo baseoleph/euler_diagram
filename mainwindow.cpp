@@ -293,7 +293,42 @@ void MainWindow::swap(QSet<int> &a, QSet<int> &b)
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
+    if (event->key() == Qt::Key_Return ||
+            event->key() == Qt::Key_Enter)
+    {
+       ++cnter %= test.size()-1;
+       QSet<int> a = test[cnter][0];
+       QSet<int> b = test[cnter][1];
+       QSet<int> c = test[cnter][2];
+       QList<int> list = {};
+       QString string;
+       sort(a, b, c);
+       list = a.values();
+       string = "";
+        foreach(auto e, list)
+        {
+            string += QString::number(e) + " ";
+        }
+       ui->lineEdit_a->setText(string);
 
+       list = b.values();
+       string = "";
+        foreach(auto e, list)
+        {
+            string += QString::number(e) + " ";
+        }
+       ui->lineEdit_b->setText(string);
+
+       list = c.values();
+       string = "";
+        foreach(auto e, list)
+        {
+            string += QString::number(e) + " ";
+        }
+       ui->lineEdit_c->setText(string);
+
+       ui->statusbar->showMessage(QString::number(cnter + 1));
+    }
 }
 void MainWindow::updateSets()
 {
