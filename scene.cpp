@@ -23,34 +23,41 @@ void Scene::setCircles(QSet<int> A, QSet<int> B, QSet<int> C)
     this->A = A;
     this->B = B;
     this->C = C;
-    int rad = 200;
+    int width = this->width();
+    int height = this->height();
+    int cnt = A.size() + B.size() + C.size();
+    int cell = width / cnt;
+
+    int dima = A.size() * cell;
     Ael->setPen(QPen(Qt::darkRed));
-    Ael->setPos(0, 0);
-    Ael->setRect(0, 0, rad, rad);
-    Ael->moveBy(-rad/2, -rad/2);
+    Ael->setPos(0, height/2 - dima/2);
+    Ael->setRect(0, 0, dima, dima);
+//    Ael->moveBy(-rada/2, -rada/2);
 
+    int dimb = B.size() * cell;
     Bel->setPen(QPen(Qt::darkGreen));
-    Bel->setPos(0, 0);
-    Bel->setRect(0, 0, rad, rad);
-    Bel->moveBy(-rad/2, -rad/2);
+    Bel->setPos(Ael->boundingRect().width(), height/2 - dimb/2);
+    Bel->setRect(0, 0, dimb, dimb);
+//    Bel->moveBy(-radb/2, -radb/2);
 
-    Cel->setPen(QPen(Qt::darkBlue));
-    Cel->setPos(0, 0);
-    Cel->setRect(0, 0, rad, rad);
-    Cel->moveBy(-rad/2, -rad/2);
 
-    putOneRelatOther(Bel, Ael, B, A);
-    putOneRelatOther(Cel, Bel, C, B);
-    putOneRelatOther(Cel, Ael, C, A);
+//    putOneRelatOther(Bel, Ael, B, A);
+
+//    int rightA = Ael->pos().x() + Ael->boundingRect().width();
+//    int rightB = Bel->pos().x() + Bel->boundingRect().width();
+
+//    int radc = C.size() * 10;
+//    Cel->setPen(QPen(Qt::darkBlue));
+//    Cel->setPos(qMax(rightA, rightB) + 10, 0);
+//    Cel->setRect(0, 0, radc, radc);
+//    Cel->moveBy(0, -radc/2);
+//    putOneRelatOther(Cel, Bel, C, B);
+//    putOneRelatOther(Cel, Ael, C, A);
 }
 
 void Scene::putOneRelatOther(QGraphicsEllipseItem *one, const QGraphicsEllipseItem *oth,
                              const QSet<int> set_one, const QSet<int> set_oth)
 {
-//    if (not set_one->intersects(*set_oth))
-//    {
-//        one->moveBy(oth->boundingRect().width() + 10, 0);
-//    }
     if (set_one == set_oth)
     {
         one->setPos(oth->pos());

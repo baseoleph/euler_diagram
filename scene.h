@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QSet>
 #include <QGraphicsEllipseItem>
+#include <QtMath>
 
 
 class Scene : public QGraphicsScene

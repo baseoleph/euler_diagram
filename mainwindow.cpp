@@ -37,7 +37,8 @@ void MainWindow::setUpScene()
     int width = ui->graphicsView->width();
     int height = ui->graphicsView->height();
 
-    QRectF r(-width/2, -height/2, width, height);
+//    QRectF r(-width/2, -height/2, width, height);
+    QRectF r(0, 0, width, height);
     scene->setSceneRect(r);
 }
 
