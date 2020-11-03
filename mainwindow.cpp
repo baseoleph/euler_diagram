@@ -434,3 +434,73 @@ void MainWindow::resizeEvent(QResizeEvent* event)
     scene->setSceneRect(r);
     scene->setCircles(A, B, C, categ);
 }
+
+void MainWindow::on_lineEdit_d_textChanged(const QString &arg1)
+{
+    expression = "(" + arg1.trimmed().simplified().toLower() + ")";
+    while (expression.indexOf(" ") != -1) expression.remove(" ");
+    if (isStringCorrect(expression)) ui->statusbar->showMessage("+");
+    else ui->statusbar->showMessage("-");
+}
+
+bool MainWindow::isStringCorrect(QString str)
+{
+    if (str.isEmpty()) return true;
+    if (str.contains("()")) return false;
+    if (str.count("(") != str.count(")")) return false;
+    QVector<QString> stack = {};
+    for (int i = 0; i < str.size(); ++i)
+    {
+        if (str[i] == "(") stack.push_back("(");
+        if (str[i] == ")" && stack.endsWith("(")) stack.pop_back();
+        else if (str[i] == ")") return false;
+    }
+    if (not stack.isEmpty()) return false;
+
+    int permiss_cnt = str.count("a") + str.count("b") + str.count("c") +
+                      str.count("&") + str.count("|") + str.count("\\") +
+                      str.count("(") + str.count(")");
+    if(permiss_cnt != str.size()) return false;
+
+    int pos = 0;
+    for (int i = 0; i < str.size(); ++i)
+    {
+        if (i != 0            && str[i] == "(" && (str[i-1] == "a" || str[i-1] == "b" || str[i-1] == "c")) return false;
+        if (i != str.size()-1 && str[i] == "(" && (str[i+1] == "&" || str[i+1] == "|" || str[i+1] == "\\")) return false;
+        if (i != 0            && str[i] == ")" && (str[i-1] == "&" || str[i-1] == "|" || str[i-1] == "\\")) return false;
+        if (i != str.size()-1 && str[i] == ")" && (str[i+1] == "a" || str[i+1] == "b" || str[i+1] == "c")) return false;
+
+        if (i != 0            && (str[i] == "&" || str[i] == "|" || str[i] == "\\") &&
+                                 (str[i-1] == "(" || str[i-1] == "&" || str[i-1] == "|" || str [i-1] == "\\")) return false;
+
+        if (i != str.size()-1 && (str[i] == "&" || str[i] == "|" || str[i] == "\\") &&
+                                 (str[i+1] == ")" || str[i+1] == "&" || str[i+1] == "|" || str [i+1] == "\\")) return false;
+
+        if (i != 0            && (str[i] == "a" || str[i] == "b" || str[i] == "c") &&
+                                 (str[i-1] == ")" || str[i-1] == "a" || str[i-1] == "b" || str [i-1] == "c")) return false;
+
+        if (i != str.size()-1 && (str[i] == "a" || str[i] == "b" || str[i] == "c") &&
+                                 (str[i+1] == "(" || str[i+1] == "a" || str[i+1] == "b" || str [i+1] == "c")) return false;
+
+        if (str[i] == "&" || str[i] == "|" || str[i] == "\\")
+        {
+            if (pos != 0 && i - pos <= 2) return false;
+            pos = i;
+        }
+    }
+
+    return true;
+}
+
+void MainWindow::on_pushButton_calc_clicked()
+{
+    eval.clear();
+    if (isStringCorrect(expression))
+    {
+        qDebug() << 0;
+    }
+    else
+    {
+        qDebug() << 1;
+    }
+}

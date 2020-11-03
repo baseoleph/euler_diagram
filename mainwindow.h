@@ -37,7 +37,12 @@ private slots:
 
     void on_lineEdit_c_textChanged(const QString &arg1);
 
+    void on_lineEdit_d_textChanged(const QString &arg1);
+
+    void on_pushButton_calc_clicked();
+
 private:
+    QString expression;
     void updateTestSets();
     void getTests();
     Scene *scene;
@@ -51,7 +56,9 @@ private:
     QStringList aline;
     QStringList bline;
     QStringList cline;
+    QVector<QSet<int>> eval;
 
+    bool isStringCorrect(QString str);
     int categ = 0;
     int cnter = -1;
 };
