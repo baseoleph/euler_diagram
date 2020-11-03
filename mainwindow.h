@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <QSet>
 #include <QDebug>
+#include <QTimer>
+
+#include "scene.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,6 +21,7 @@ public:
     ~MainWindow();
 
 private slots:
+    void setUpScene();
     void on_pushButton_clicked();
 
     void on_lineEdit_a_textChanged(const QString &arg1);
@@ -27,6 +31,8 @@ private slots:
     void on_lineEdit_c_textChanged(const QString &arg1);
 
 private:
+    Scene *scene;
+    QTimer *tm;
     void updateSets();
     Ui::MainWindow *ui;
     QSet<int> A;
