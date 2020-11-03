@@ -5,6 +5,7 @@
 #include <QSet>
 #include <QDebug>
 #include <QTimer>
+#include <QKeyEvent>
 
 #include "scene.h"
 
@@ -20,7 +21,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void sort(QSet<int> a, QSet<int> b, QSet<int> c);
+    void swap(QSet<int> &a, QSet<int> &b);
+
 private slots:
+    void keyPressEvent(QKeyEvent *event);
     void setUpScene();
     void on_pushButton_clicked();
 
@@ -38,9 +43,11 @@ private:
     QSet<int> A;
     QSet<int> B;
     QSet<int> C;
+    QVector<QVector<QSet<int>>> test;
     QStringList aline;
     QStringList bline;
     QStringList cline;
 
+    int categ = 0;
 };
 #endif // MAINWINDOW_H

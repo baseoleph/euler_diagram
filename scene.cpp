@@ -18,60 +18,104 @@ Scene::~Scene()
    delete Cel;
 }
 
-void Scene::setCircles(QSet<int> A, QSet<int> B, QSet<int> C)
+void Scene::setCircles(QSet<int> A, QSet<int> B, QSet<int> C, int categ)
 {
     this->A = A;
     this->B = B;
     this->C = C;
-    int width = this->width();
-    int height = this->height();
-    int cnt = A.size() + B.size() + C.size();
-    cell = width / cnt;
 
-    int dima = A.size() * cell;
     Ael->setPen(QPen(Qt::darkRed));
-    Ael->setPos(0, height/2 - dima/2);
-    Ael->setRect(0, 0, dima, dima);
-//    Ael->moveBy(-rada/2, -rada/2);
-
-    int dimb = B.size() * cell;
     Bel->setPen(QPen(Qt::darkGreen));
-    Bel->setPos(Ael->boundingRect().width(), height/2 - dimb/2);
-    Bel->setRect(0, 0, dimb, dimb);
-//    Bel->moveBy(-radb/2, -radb/2);
+    Cel->setPen(QPen(Qt::darkBlue));
 
-
-    putOneRelatOther(Bel, Ael, B, A);
-
-//    int rightA = Ael->pos().x() + Ael->boundingRect().width();
-//    int rightB = Bel->pos().x() + Bel->boundingRect().width();
-
-//    int radc = C.size() * 10;
-//    Cel->setPen(QPen(Qt::darkBlue));
-//    Cel->setPos(qMax(rightA, rightB) + 10, 0);
-//    Cel->setRect(0, 0, radc, radc);
-//    Cel->moveBy(0, -radc/2);
-//    putOneRelatOther(Cel, Bel, C, B);
-//    putOneRelatOther(Cel, Ael, C, A);
+         if (categ == 1) cat1();
+    else if (categ == 2) cat2();
+    else if (categ == 3) cat3();
+    else if (categ == 4) cat4();
+    else if (categ == 5) cat5();
+    else if (categ == 6) cat6();
+    else if (categ == 7) cat7();
+    else if (categ == 8) cat8();
+    else if (categ == 9) cat9();
+    else if (categ == 10) cat10();
+    else if (categ == 12) cat12();
+    else if (categ == 13) cat13();
+    else if (categ == 14) cat14();
+    else if (categ == 15) cat15();
+    else if (categ == 16) cat16();
 }
 
-void Scene::putOneRelatOther(QGraphicsEllipseItem *one, const QGraphicsEllipseItem *oth,
-                              QSet<int> set_one, const QSet<int> set_oth)
+void Scene::cat1()
 {
-    if (set_one == set_oth)
-    {
-        one->setPos(oth->pos());
-    }
-    else if (set_oth.contains(set_one) && not set_one.contains(set_oth))
-    {
-        one->moveBy(-oth->rect().width(), 0);
-    }
-    else if (not set_oth.contains(set_one) && set_one.contains(set_oth))
-    {
-        one->moveBy(-oth->rect().width(), 0);
-    }
-    else if (set_one.intersects(set_oth))
-    {
-        one->moveBy(-cell * set_one.intersect(set_oth).size(), 0);
-    }
+
+}
+
+void Scene::cat2()
+{
+
+}
+
+void Scene::cat3()
+{
+
+}
+
+void Scene::cat4()
+{
+
+}
+
+void Scene::cat5()
+{
+
+}
+
+void Scene::cat6()
+{
+
+}
+
+void Scene::cat7()
+{
+
+}
+
+void Scene::cat8()
+{
+
+}
+
+void Scene::cat9()
+{
+
+}
+
+void Scene::cat10()
+{
+
+}
+
+void Scene::cat12()
+{
+
+}
+
+void Scene::cat13()
+{
+
+}
+
+void Scene::cat14()
+{
+
+}
+
+void Scene::cat15()
+{
+
+}
+
+void Scene::cat16()
+{
+
 }

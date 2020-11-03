@@ -17,10 +17,11 @@ public:
     Scene();
     ~Scene();
 
-    void setCircles(QSet<int> A, QSet<int> B, QSet<int> C);
+    void setCircles(QSet<int> A, QSet<int> B, QSet<int> C, int categ);
     void putOneRelatOther(QGraphicsEllipseItem *one, const QGraphicsEllipseItem *oth,
                           QSet<int> set_one, const QSet<int> set_oth);
 private:
+    int categ;
     int cell;
     QGraphicsEllipseItem *Ael;
     QGraphicsEllipseItem *Bel;
@@ -28,6 +29,22 @@ private:
     QSet<int> A;
     QSet<int> B;
     QSet<int> C;
+
+    void cat1();
+    void cat2();
+    void cat3();
+    void cat4();
+    void cat5();
+    void cat6();
+    void cat7();
+    void cat8();
+    void cat9();
+    void cat10();
+    void cat12();
+    void cat13();
+    void cat14();
+    void cat15();
+    void cat16();
 };
 
 #endif // SCENE_H
