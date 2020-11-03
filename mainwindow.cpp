@@ -67,6 +67,7 @@ void MainWindow::updateSets()
         if (e != "") C.insert(e.toInt());
     }
 
+    qDebug() << "";
     qDebug() << A.values();
     qDebug() << B.values();
     qDebug() << "inter" << A.intersects(B);

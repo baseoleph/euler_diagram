@@ -19,8 +19,9 @@ public:
 
     void setCircles(QSet<int> A, QSet<int> B, QSet<int> C);
     void putOneRelatOther(QGraphicsEllipseItem *one, const QGraphicsEllipseItem *oth,
-                          const QSet<int> set_one, const QSet<int> set_oth);
+                          QSet<int> set_one, const QSet<int> set_oth);
 private:
+    int cell;
     QGraphicsEllipseItem *Ael;
     QGraphicsEllipseItem *Bel;
     QGraphicsEllipseItem *Cel;
