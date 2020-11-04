@@ -457,12 +457,31 @@ bool MainWindow::isStringCorrect(QString str)
     }
     if (not stack.isEmpty()) return false;
 
+    QString without_letters = str;
+    while (without_letters.indexOf("a") != -1) without_letters.remove("a");
+    while (without_letters.indexOf("b") != -1) without_letters.remove("b");
+    while (without_letters.indexOf("c") != -1) without_letters.remove("c");
+    stack.clear();
+    for (int i = 0; i < without_letters.size(); ++i)
+    {
+        if (without_letters[i] == "(") stack.push_back("(");
+        if (without_letters[i] == "&" || without_letters[i] == "|" || without_letters[i] == "\\") stack.push_back(QString(without_letters[i]));
+        if (without_letters[i] == ")" && stack[stack.size()-2] == "(" && (stack.endsWith("&") || stack.endsWith("|") || stack.endsWith("\\")))
+        {
+            stack.pop_back();
+            stack.pop_back();
+        }
+        else if (without_letters[i] == ")") return false;
+    }
+    if (not stack.isEmpty()) return false;
+
+
     int permiss_cnt = str.count("a") + str.count("b") + str.count("c") +
                       str.count("&") + str.count("|") + str.count("\\") +
                       str.count("(") + str.count(")");
     if(permiss_cnt != str.size()) return false;
 
-    int pos = 0;
+//    int pos = 0;
     for (int i = 0; i < str.size(); ++i)
     {
         if (i != 0            && str[i] == "(" && (str[i-1] == "a" || str[i-1] == "b" || str[i-1] == "c")) return false;
@@ -482,11 +501,11 @@ bool MainWindow::isStringCorrect(QString str)
         if (i != str.size()-1 && (str[i] == "a" || str[i] == "b" || str[i] == "c") &&
                                  (str[i+1] == "(" || str[i+1] == "a" || str[i+1] == "b" || str [i+1] == "c")) return false;
 
-        if (str[i] == "&" || str[i] == "|" || str[i] == "\\")
-        {
-            if (pos != 0 && i - pos <= 2) return false;
-            pos = i;
-        }
+//        if (str[i] == "&" || str[i] == "|" || str[i] == "\\")
+//        {
+//            if (pos != 0 && i - pos <= 2) return false;
+//            pos = i;
+//        }
     }
 
     return true;
@@ -498,6 +517,9 @@ QSet<int> MainWindow::evaluate(QString str)
     QSet<int> b;
     int p = 0;
 
+    qDebug() <<  "!!!!";
+    qDebug() << str.split("%", Qt::SkipEmptyParts);
+    qDebug()  << "!!!!";
     if (str[0] == "%")
     {
         p = str.indexOf("%", 1);
