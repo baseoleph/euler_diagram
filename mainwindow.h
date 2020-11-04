@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <QResizeEvent>
+#include <QtAlgorithms>
 
 #include "scene.h"
 
@@ -37,7 +38,7 @@ private slots:
 
     void on_lineEdit_c_textChanged(const QString &arg1);
 
-    void on_lineEdit_d_textChanged(const QString &arg1);
+    void on_lineEdit_exp_textChanged(const QString &arg1);
 
     void on_pushButton_calc_clicked();
 
@@ -52,6 +53,7 @@ private:
     QSet<int> A;
     QSet<int> B;
     QSet<int> C;
+    QSet<int> D;
     QVector<QVector<QSet<int>>> test;
     QStringList aline;
     QStringList bline;

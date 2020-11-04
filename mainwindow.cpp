@@ -435,7 +435,7 @@ void MainWindow::resizeEvent(QResizeEvent* event)
     scene->setCircles(A, B, C, categ);
 }
 
-void MainWindow::on_lineEdit_d_textChanged(const QString &arg1)
+void MainWindow::on_lineEdit_exp_textChanged(const QString &arg1)
 {
     expression = "(" + arg1.trimmed().simplified().toLower() + ")";
     while (expression.indexOf(" ") != -1) expression.remove(" ");
@@ -462,18 +462,21 @@ bool MainWindow::isStringCorrect(QString str)
     while (without_letters.indexOf("b") != -1) without_letters.remove("b");
     while (without_letters.indexOf("c") != -1) without_letters.remove("c");
     stack.clear();
-    for (int i = 0; i < without_letters.size(); ++i)
+    if (without_letters != "()")
     {
-        if (without_letters[i] == "(") stack.push_back("(");
-        if (without_letters[i] == "&" || without_letters[i] == "|" || without_letters[i] == "\\") stack.push_back(QString(without_letters[i]));
-        if (without_letters[i] == ")" && stack[stack.size()-2] == "(" && (stack.endsWith("&") || stack.endsWith("|") || stack.endsWith("\\")))
+        for (int i = 0; i < without_letters.size(); ++i)
         {
-            stack.pop_back();
-            stack.pop_back();
+            if (without_letters[i] == "(") stack.push_back("(");
+            if (without_letters[i] == "&" || without_letters[i] == "|" || without_letters[i] == "\\") stack.push_back(QString(without_letters[i]));
+            if (without_letters[i] == ")" && stack.endsWith("(")) stack.pop_back();
+            else if (without_letters[i] == ")" && (stack[stack.size()-2] == "(") && (stack.endsWith("&") || stack.endsWith("|") || stack.endsWith("\\")))
+            {
+                stack.pop_back();
+                stack.pop_back();
+            }
         }
-        else if (without_letters[i] == ")") return false;
+        if (not stack.isEmpty()) return false;
     }
-    if (not stack.isEmpty()) return false;
 
 
     int permiss_cnt = str.count("a") + str.count("b") + str.count("c") +
@@ -580,5 +583,12 @@ QSet<int> MainWindow::roll(QString expression)
 void MainWindow::on_pushButton_calc_clicked()
 {
     eval.clear();
-    qDebug() << roll(expression);
+    D = roll(expression);
+    scene->colorize(D);
+    QList<int> temp = D.values();
+    std::sort(temp.begin(), temp.end());
+    QString str = "";
+    foreach (auto e, temp) str += QString::number(e) + " ";
+    str = "D = {" + str + "}";
+    ui->label_d->setText(str);
 }

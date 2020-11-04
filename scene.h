@@ -10,6 +10,7 @@
 #include <QtMath>
 #include <QRandomGenerator>
 
+#include "filledpath.h"
 
 class Scene : public QGraphicsScene
 {
@@ -18,6 +19,7 @@ public:
     Scene();
     ~Scene();
 
+    void colorize(QSet<int> D);
     void setCircles(QSet<int> A, QSet<int> B, QSet<int> C, int categ);
     void putOneRelatOther(QGraphicsEllipseItem *one, const QGraphicsEllipseItem *oth,
                           QSet<int> set_one, const QSet<int> set_oth);
@@ -26,6 +28,8 @@ signals:
     void signalForMoveText();
 
 private:
+    FilledPath *fp;
+
     void moveText();
     int categ;
     int cell;
