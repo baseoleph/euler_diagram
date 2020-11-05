@@ -10,6 +10,7 @@
 #include <QtAlgorithms>
 
 #include "scene.h"
+#include "filledpath.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -43,6 +44,7 @@ private slots:
     void on_pushButton_calc_clicked();
 
 private:
+    QPainterPath *path;
     QString expression;
     void updateTestSets();
     void getTests();
@@ -59,6 +61,7 @@ private:
     QStringList bline;
     QStringList cline;
     QVector<QSet<int>> eval;
+    QVector<QPainterPath> vector_path;
 
     bool isStringCorrect(QString str);
     QSet<int> evaluate(QString str);

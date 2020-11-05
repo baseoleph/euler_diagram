@@ -23,12 +23,15 @@ public:
     void setCircles(QSet<int> A, QSet<int> B, QSet<int> C, int categ);
     void putOneRelatOther(QGraphicsEllipseItem *one, const QGraphicsEllipseItem *oth,
                           QSet<int> set_one, const QSet<int> set_oth);
+    QGraphicsEllipseItem *Ael;
+    QGraphicsEllipseItem *Bel;
+    QGraphicsEllipseItem *Cel;
 
+    FilledPath *fp;
 signals:
     void signalForMoveText();
 
 private:
-    FilledPath *fp;
 
     void moveText();
     int categ;
@@ -37,9 +40,6 @@ private:
     QGraphicsTextItem *At;
     QGraphicsTextItem *Bt;
     QGraphicsTextItem *Ct;
-    QGraphicsEllipseItem *Ael;
-    QGraphicsEllipseItem *Bel;
-    QGraphicsEllipseItem *Cel;
     QSet<int> A;
     QSet<int> B;
     QSet<int> C;

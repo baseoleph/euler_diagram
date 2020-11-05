@@ -23,6 +23,7 @@ Scene::Scene()
     Ct->setZValue(1);
 
     addItem(fp);
+    fp->setZValue(-1);
 
     At->setPlainText("A");
     Bt->setPlainText("B");

@@ -518,45 +518,94 @@ QSet<int> MainWindow::evaluate(QString str)
 {
     QSet<int> a;
     QSet<int> b;
+    QSet<int> ans;
+    QPainterPath apath;
+    QPainterPath bpath;
+    QPainterPath anspath;
+
     int p = 0;
 
-    qDebug() <<  "!!!!";
-    qDebug() << str.split("%", Qt::SkipEmptyParts);
-    qDebug()  << "!!!!";
     if (str[0] == "%")
     {
         p = str.indexOf("%", 1);
         a = eval[str.mid(1, p-1).toInt()];
+        apath = vector_path[str.mid(1, p-1).toInt()];
         qDebug() << str.mid(1, p-1);
     }
     else
     {
-        if (str[0] == "a") a = A;
-        if (str[0] == "b") a = B;
-        if (str[0] == "c") a = C;
-    }
-    if (str.size() == 1) return a;
+        if (str[0] == "a")
+        {
+            a = A;
+            apath.addEllipse(QRectF(scene->Ael->pos().x(), scene->Ael->pos().y(), scene->Ael->rect().width(), scene->Ael->rect().height()));
+        }
+        if (str[0] == "b")
+        {
+            a = B;
+            apath.addEllipse(QRectF(scene->Bel->pos().x(), scene->Bel->pos().y(), scene->Bel->rect().width(), scene->Bel->rect().height()));
+        }
+        if (str[0] == "c")
+        {
+            a = C;
+            apath.addEllipse(QRectF(scene->Cel->pos().x(), scene->Cel->pos().y(), scene->Cel->rect().width(), scene->Cel->rect().height()));
+        }
 
-    if (str[p+2] == "%")
+    }
+    if (str.size() == 1)
     {
-        p = str.indexOf("%", p+3);
-        b = eval[str.mid(1, p+1).toInt()];
-        qDebug() << str.mid(1, p+1);
+        ans = a;
+        anspath = apath;
     }
     else
     {
-        if (str[p+2] == "a") b = A;
-        if (str[p+2] == "b") b = B;
-        if (str[p+2] == "c") b = C;
+        if (str[p+2] == "%")
+        {
+            p = str.indexOf("%", p+3);
+            b = eval[str.mid(1, p+1).toInt()];
+            bpath = vector_path[str.mid(1, p+1).toInt()];
+//            qDebug() << str.mid(1, p+1);
+        }
+        else
+        {
+            if (str[p+2] == "a")
+            {
+                b = A;
+                bpath.addEllipse(QRectF(scene->Ael->pos().x(), scene->Ael->pos().y(), scene->Ael->rect().width(), scene->Ael->rect().height()));
+            }
+            if (str[p+2] == "b")
+            {
+                b = B;
+                bpath.addEllipse(QRectF(scene->Bel->pos().x(), scene->Bel->pos().y(), scene->Bel->rect().width(), scene->Bel->rect().height()));
+            }
+            if (str[p+2] == "c")
+            {
+                b = C;
+                bpath.addEllipse(QRectF(scene->Cel->pos().x(), scene->Cel->pos().y(), scene->Cel->rect().width(), scene->Cel->rect().height()));
+            }
+        }
+
+//        qDebug() << str << a << b;
+        if (str.indexOf("&") != -1)
+        {
+             ans = a&b;
+             anspath = apath.intersected(bpath);
+        }
+        else if (str.indexOf("|") != -1)
+        {
+             ans = a|b;
+             anspath = apath.united(bpath);
+        }
+        else if (str.indexOf("\\") != -1)
+        {
+             ans = a-b;
+             anspath = apath.subtracted(bpath);
+        }
     }
 
-    qDebug() << str << a << b;
-    if (str.indexOf("&") != -1) return a&b;
-    else if (str.indexOf("|") != -1) return a|b;
-    else if (str.indexOf("\\") != -1) return a-b;
 
 
-    return a;
+    vector_path.append(anspath);
+    return ans;
 }
 
 QSet<int> MainWindow::roll(QString expression)
@@ -582,8 +631,13 @@ QSet<int> MainWindow::roll(QString expression)
 
 void MainWindow::on_pushButton_calc_clicked()
 {
+    scene->fp->path.clear();
     eval.clear();
+    vector_path.clear();
+
     D = roll(expression);
+    scene->fp->path = vector_path.last();
+//    qDebug() << vector_path;
     scene->colorize(D);
     QList<int> temp = D.values();
     std::sort(temp.begin(), temp.end());

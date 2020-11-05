@@ -25,6 +25,7 @@ public:
     QPainterPath ACwB;
     QPainterPath BCwA;
     QPainterPath ABC;
+    QPainterPath path;
 
     void fillIntersects();
     void unFillIntersects();

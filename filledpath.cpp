@@ -36,6 +36,7 @@ void FilledPath::unFillIntersects()
     ACwB.clear();
     BCwA.clear();
     ABC.clear();
+//    path.clear();
     is_fill = false;
     update();
 }
@@ -49,19 +50,20 @@ void FilledPath::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->setBrush(QBrush(QColor(Qt::darkGray)));
+    painter->setBrush(QBrush(QColor(Qt::darkGreen)));
     painter->setPen(Qt::NoPen);
 
     if (is_fill)
     {
-        qDebug() << ABC;
-        if (not ABC.isEmpty()) painter->drawPath(ABC);
-        if (not ABwC.isEmpty()) painter->drawPath(ABwC);
-        if (not ACwB.isEmpty()) painter->drawPath(ACwB);
-        if (not BCwA.isEmpty()) painter->drawPath(BCwA);
-        if (not AwBC.isEmpty()) painter->drawPath(AwBC);
-        if (not BwAC.isEmpty()) painter->drawPath(BwAC);
-        if (not CwAB.isEmpty()) painter->drawPath(CwAB);
+        painter->drawPath(path);
+//        qDebug() << path;
+//        if (not ABC.isEmpty()) painter->drawPath(ABC);
+//        if (not ABwC.isEmpty()) painter->drawPath(ABwC);
+//        if (not ACwB.isEmpty()) painter->drawPath(ACwB);
+//        if (not BCwA.isEmpty()) painter->drawPath(BCwA);
+//        if (not AwBC.isEmpty()) painter->drawPath(AwBC);
+//        if (not BwAC.isEmpty()) painter->drawPath(BwAC);
+//        if (not CwAB.isEmpty()) painter->drawPath(CwAB);
     }
 }
 
