@@ -12,12 +12,13 @@ MainWindow::MainWindow(QWidget *parent)
     bline = ui->lineEdit_b->text().split(" ");
     cline = ui->lineEdit_c->text().split(" ");
 
-
     tm = new QTimer();
     connect(tm, &QTimer::timeout, this, &MainWindow::setUpScene);
     tm->start(100);
 
+#ifdef _DEBUG
     getTests();
+#endif
 }
 
 MainWindow::~MainWindow()
@@ -138,13 +139,17 @@ void MainWindow::setUpScene()
     int height = ui->graphicsView->height();
     QRectF r(0, 0, width, height);
     scene->setSceneRect(r);
+
+    scene->fp->updateBoundingRect(width, height);
     updateSets();
 }
 
 void MainWindow::on_pushButton_clicked()
 {
     updateSets();
+    scene->fp->unFillIntersects();
     scene->setCircles(A, B, C, categ);
+    expression_fix = "";
 }
 
 void MainWindow::swap(QSet<int> &a, QSet<int> &b)
@@ -157,6 +162,7 @@ void MainWindow::swap(QSet<int> &a, QSet<int> &b)
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
+#ifdef _DEBUG
     if (event->key() == Qt::Key_Return ||
             event->key() == Qt::Key_Enter)
     {
@@ -215,6 +221,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
        updateTestSets();
        scene->setCircles(A, B, C, categ);
     }
+#else
+    Q_UNUSED(event)
+#endif
 }
 void MainWindow::updateSets()
 {
@@ -235,25 +244,57 @@ void MainWindow::updateSets()
     }
 
     sort(A, B, C);
-    scene->setCircles(A, B, C, categ);
-    qDebug() << categ;
+    if (ui->lineEdit_a->text() == "" || ui->lineEdit_b->text() == "" || ui->lineEdit_c->text() == "")
+    {
+       ui->pushButton->setEnabled(false);
+    }
+    else
+    {
+        scene->setCircles(A, B, C, categ);
+    }
 }
 
 void MainWindow::on_lineEdit_a_textChanged(const QString &arg1)
 {
     aline = arg1.split(" ");
+    if (ui->lineEdit_a->text() == "" || ui->lineEdit_b->text() == "" || ui->lineEdit_c->text() == "")
+    {
+       ui->pushButton->setEnabled(false);
+    }
+    else
+    {
+       ui->pushButton->setEnabled(true);
+    }
 }
 
 void MainWindow::on_lineEdit_b_textChanged(const QString &arg1)
 {
     bline = arg1.split(" ");
+    if (ui->lineEdit_a->text() == "" || ui->lineEdit_b->text() == "" || ui->lineEdit_c->text() == "")
+    {
+       ui->pushButton->setEnabled(false);
+    }
+    else
+    {
+       ui->pushButton->setEnabled(true);
+    }
 }
 
 void MainWindow::on_lineEdit_c_textChanged(const QString &arg1)
 {
     cline = arg1.split(" ");
+    if (ui->lineEdit_a->text() == "" || ui->lineEdit_b->text() == "" || ui->lineEdit_c->text() == "")
+    {
+       ui->pushButton->setEnabled(false);
+    }
+    else
+    {
+       ui->pushButton->setEnabled(true);
+    }
 }
 
+
+#ifdef _DEBUG
 void MainWindow::updateTestSets()
 {
    QList<int> list = {};
@@ -285,7 +326,9 @@ void MainWindow::updateTestSets()
 
    ui->statusbar->showMessage(QString::number(cnter + 1));
 }
+#endif
 
+#ifdef _DEBUG
 void MainWindow::getTests()
 {
     //1
@@ -424,6 +467,7 @@ void MainWindow::getTests()
         }
     }
 }
+#endif
 
 void MainWindow::resizeEvent(QResizeEvent* event)
 {
@@ -433,6 +477,18 @@ void MainWindow::resizeEvent(QResizeEvent* event)
     QRectF r(0, 0, width, height);
     scene->setSceneRect(r);
     scene->setCircles(A, B, C, categ);
+
+    scene->fp->path.clear();
+    eval.clear();
+    vector_path.clear();
+
+    if (expression_fix != "")
+    {
+        roll(expression_fix);
+        scene->fp->path = vector_path.last();
+        scene->colorize();
+    }
+
 }
 
 void MainWindow::on_lineEdit_exp_textChanged(const QString &arg1)
@@ -618,11 +674,7 @@ QSet<int> MainWindow::roll(QString expression)
         int rp = right_par - left_par - 1;
         QString tempstr = expression.mid(lp, rp);
         eval.append(evaluate(tempstr));
-        qDebug() << "temp " << tempstr << eval;
         expression = expression.replace(lp-1, rp+2, "%" + QString::number(eval.size()-1) + "%");
-//        qDebug() << expression;
-//        qDebug() << eval;
-//        qDebug() << "--------------";
     }
 
 
@@ -631,14 +683,14 @@ QSet<int> MainWindow::roll(QString expression)
 
 void MainWindow::on_pushButton_calc_clicked()
 {
+    expression_fix = expression;
     scene->fp->path.clear();
     eval.clear();
     vector_path.clear();
 
     D = roll(expression);
     scene->fp->path = vector_path.last();
-//    qDebug() << vector_path;
-    scene->colorize(D);
+    scene->colorize();
     QList<int> temp = D.values();
     std::sort(temp.begin(), temp.end());
     QString str = "";

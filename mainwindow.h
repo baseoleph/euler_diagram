@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+//#define _DEBUG
+
 #include <QMainWindow>
 #include <QSet>
 #include <QDebug>
@@ -46,8 +48,14 @@ private slots:
 private:
     QPainterPath *path;
     QString expression;
+    QString expression_fix;
+    bool is_button_clicked = false;
+#ifdef _DEBUG
     void updateTestSets();
     void getTests();
+    QVector<QVector<QSet<int>>> test;
+#endif
+
     Scene *scene;
     QTimer *tm;
     void updateSets();
@@ -56,7 +64,6 @@ private:
     QSet<int> B;
     QSet<int> C;
     QSet<int> D;
-    QVector<QVector<QSet<int>>> test;
     QStringList aline;
     QStringList bline;
     QStringList cline;

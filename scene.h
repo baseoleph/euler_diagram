@@ -19,7 +19,7 @@ public:
     Scene();
     ~Scene();
 
-    void colorize(QSet<int> D);
+    void colorize();
     void setCircles(QSet<int> A, QSet<int> B, QSet<int> C, int categ);
     void putOneRelatOther(QGraphicsEllipseItem *one, const QGraphicsEllipseItem *oth,
                           QSet<int> set_one, const QSet<int> set_oth);
@@ -33,7 +33,7 @@ signals:
 
 private:
 
-    void moveText();
+    void updateText();
     int categ;
     int cell;
     int mainwidth;

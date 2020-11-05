@@ -40,7 +40,7 @@
           <item>
            <widget class="QLineEdit" name="lineEdit_a">
             <property name="text">
-             <string>1 2 3 4 5</string>
+             <string>1</string>
             </property>
            </widget>
           </item>
@@ -67,7 +67,7 @@
           <item>
            <widget class="QLineEdit" name="lineEdit_b">
             <property name="text">
-             <string>3 4 5 6</string>
+             <string>2</string>
             </property>
            </widget>
           </item>
@@ -94,7 +94,7 @@
           <item>
            <widget class="QLineEdit" name="lineEdit_c">
             <property name="text">
-             <string>1 4 8</string>
+             <string>3</string>
             </property>
            </widget>
           </item>
@@ -118,7 +118,7 @@
        <item>
         <widget class="QLineEdit" name="lineEdit_exp">
          <property name="text">
-          <string>(a&amp;b)\(c|a)&amp;((a&amp;a)&amp;b)</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -163,7 +163,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

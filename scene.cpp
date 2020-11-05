@@ -9,8 +9,6 @@ Scene::Scene()
     Bt = new QGraphicsTextItem();
     Ct = new QGraphicsTextItem();
 
-    fp = new FilledPath(width(), height());
-
     addItem(Ael);
     addItem(Bel);
     addItem(Cel);
@@ -18,18 +16,21 @@ Scene::Scene()
     addItem(Bt);
     addItem(Ct);
 
+
     At->setZValue(1);
     Bt->setZValue(1);
     Ct->setZValue(1);
 
-    addItem(fp);
-    fp->setZValue(-1);
 
     At->setPlainText("A");
     Bt->setPlainText("B");
     Ct->setPlainText("C");
 
-    connect(this, &Scene::signalForMoveText, this, &Scene::moveText);
+    fp = new FilledPath();
+    addItem(fp);
+    fp->setZValue(-1);
+
+    connect(this, &Scene::signalForMoveText, this, &Scene::updateText);
 }
 
 Scene::~Scene()
@@ -45,8 +46,6 @@ Scene::~Scene()
 
 void Scene::setCircles(QSet<int> A, QSet<int> B, QSet<int> C, int categ)
 {
-    fp->unFillIntersects();
-
     this->A = A;
     this->B = B;
     this->C = C;
@@ -60,9 +59,9 @@ void Scene::setCircles(QSet<int> A, QSet<int> B, QSet<int> C, int categ)
     Bt->hide();
     Ct->hide();
 
-    Ael->setPen(QPen(Qt::darkRed));
-    Bel->setPen(QPen(Qt::darkGreen));
-    Cel->setPen(QPen(Qt::darkBlue));
+    Ael->setPen(QPen("#330570"));
+    Bel->setPen(QPen("#A64600"));
+    Cel->setPen(QPen("#007F16"));
 
     Ael->setRect(0, 0, diam, diam);
     Bel->setRect(0, 0, diam, diam);
@@ -89,10 +88,9 @@ void Scene::setCircles(QSet<int> A, QSet<int> B, QSet<int> C, int categ)
     else if (categ == 15) cat15();
     else if (categ == 16) cat16();
     else qDebug() << "bad category: " << categ;
-
 }
 
-void Scene::moveText()
+void Scene::updateText()
 {
     At->setPlainText("A");
     Bt->setPlainText("B");
@@ -126,9 +124,23 @@ void Scene::moveText()
     Ael->show(); Bel->show(); Cel->show();
     At->show(); Bt->show(); Ct->show();
 
-    At->setPos(Ael->pos());
-    Bt->setPos(Bel->pos());
-    Ct->setPos(Cel->pos());
+
+    qreal rad;
+    QPointF point;
+    rad = Ael->rect().width()/2.;
+    point = QPointF(Ael->rect().center().x() - rad * sqrt(2)/2 + Ael->pos().x(),
+                            Ael->rect().center().y() - rad * sqrt(2)/2 + Ael->pos().y());
+    At->setPos(point.x() - At->boundingRect().width(), point.y() - At->boundingRect().height());
+
+    rad = Bel->rect().width()/2.;
+    point = QPointF(Bel->rect().center().x() - rad * sqrt(2)/2 + Bel->pos().x(),
+                            Bel->rect().center().y() - rad * sqrt(2)/2 + Bel->pos().y());
+    Bt->setPos(point.x() - Bt->boundingRect().width(), point.y() - Bt->boundingRect().height());
+
+    rad = Cel->rect().width()/2.;
+    point = QPointF(Cel->rect().center().x() - rad * sqrt(2)/2 + Cel->pos().x(),
+                            Cel->rect().center().y() - rad * sqrt(2)/2 + Cel->pos().y());
+    Ct->setPos(point.x() - Ct->boundingRect().width(), point.y() - Ct->boundingRect().height());
 }
 
 void Scene::cat1()
@@ -577,53 +589,8 @@ void Scene::cat16()
     signalForMoveText();
 }
 
-void Scene::colorize(QSet<int> D)
+void Scene::colorize()
 {
-    fp->unFillIntersects();
-    fp->ar.clear();
-    fp->br.clear();
-    fp->cr.clear();
-
-    fp->ar.addEllipse(QRectF(Ael->pos().x(), Ael->pos().y(), Ael->rect().width(), Ael->rect().height()));
-    fp->br.addEllipse(QRectF(Bel->pos().x(), Bel->pos().y(), Bel->rect().width(), Bel->rect().height()));
-    fp->cr.addEllipse(QRectF(Cel->pos().x(), Cel->pos().y(), Cel->rect().width(), Cel->rect().height()));
-
-    QPainterPath *a = &fp->ar;
-    QPainterPath *b = &fp->br;
-    QPainterPath *c = &fp->cr;
-
-    QSet<int>::iterator e;
-    for (e = D.begin(); e != D.end(); ++e)
-    {
-        if (A.contains(*e) && B.contains(*e) && C.contains(*e))
-        {
-            fp->ABC.addPath(a->intersected(*b).intersected(*c));
-        }
-        else if (A.contains(*e) && B.contains(*e))
-        {
-            fp->ABwC.addPath(a->intersected(*b).subtracted(*c));
-        }
-        else if (A.contains(*e) && C.contains(*e))
-        {
-            fp->ACwB.addPath(a->intersected(*c).subtracted(*b));
-        }
-        else if (B.contains(*e) && C.contains(*e))
-        {
-            fp->BCwA.addPath(b->intersected(*c).subtracted(*a));
-        }
-        else if (A.contains(*e))
-        {
-            fp->AwBC.addPath(a->subtracted(*b).subtracted(*c));
-        }
-        else if (B.contains(*e))
-        {
-            fp->BwAC.addPath(b->subtracted(*a).subtracted(*c));
-        }
-        else if (C.contains(*e))
-        {
-            fp->CwAB.addPath(c->subtracted(*b).subtracted(*a));
-        }
-    }
     fp->fillIntersects();
-    moveText();
+    updateText();
 }

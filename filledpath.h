@@ -11,22 +11,16 @@ class FilledPath : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
-    explicit FilledPath(int width, int height, QObject *parent = 0);
+    explicit FilledPath(int width = 0, int height = 0, QObject *parent = 0);
     ~FilledPath();
 
     QPainterPath ar;
     QPainterPath br;
     QPainterPath cr;
 
-    QPainterPath AwBC;
-    QPainterPath BwAC;
-    QPainterPath CwAB;
-    QPainterPath ABwC;
-    QPainterPath ACwB;
-    QPainterPath BCwA;
-    QPainterPath ABC;
     QPainterPath path;
 
+    void updateBoundingRect(int width, int height);
     void fillIntersects();
     void unFillIntersects();
 protected:
