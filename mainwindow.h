@@ -26,30 +26,26 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void sort(QSet<int> a, QSet<int> b, QSet<int> c);
+    void classify_pattern(QSet<int> a, QSet<int> b, QSet<int> c);
     void swap(QSet<int> &a, QSet<int> &b);
 
 private slots:
     void resizeEvent(QResizeEvent* event);
     void keyPressEvent(QKeyEvent *event);
     void setUpScene();
+
     void on_pushButton_clicked();
-
     void on_lineEdit_a_textChanged(const QString &arg1);
-
     void on_lineEdit_b_textChanged(const QString &arg1);
-
     void on_lineEdit_c_textChanged(const QString &arg1);
-
     void on_lineEdit_exp_textChanged(const QString &arg1);
-
     void on_pushButton_calc_clicked();
 
 private:
-    QPainterPath *path;
     QString expression;
     QString expression_fix;
     bool is_button_clicked = false;
+
 #ifdef _DEBUG
     void updateTestSets();
     void getTests();

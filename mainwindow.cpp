@@ -28,7 +28,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::sort(QSet<int> a, QSet<int> b, QSet<int> c)
+void MainWindow::classify_pattern(QSet<int> a, QSet<int> b, QSet<int> c)
 {
     categ = -1;
     if ((a == b) && (b == c))
@@ -243,7 +243,7 @@ void MainWindow::updateSets()
         if (e != "") C.insert(e.toInt());
     }
 
-    sort(A, B, C);
+    classify_pattern(A, B, C);
     if (ui->lineEdit_a->text() == "" || ui->lineEdit_b->text() == "" || ui->lineEdit_c->text() == "")
     {
        ui->pushButton->setEnabled(false);
