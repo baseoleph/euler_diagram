@@ -170,7 +170,7 @@
        <item>
         <widget class="QLineEdit" name="lineEdit_exp">
          <property name="text">
-          <string>(a&amp;b)|(b&amp;c</string>
+          <string/>
          </property>
         </widget>
        </item>
