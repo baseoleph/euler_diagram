@@ -299,7 +299,7 @@ void MainWindow::updateTestSets()
 {
    QList<int> list = {};
    QString string;
-   sort(A, B, C);
+   classify_pattern(A, B, C);
    list = A.values();
    string = "";
     foreach(auto e, list)
@@ -435,32 +435,32 @@ void MainWindow::getTests()
 
     for (int i = 0; i < 16; ++i)
     {
-        sort(test[i][0], test[i][1], test[i][2]);
+        classify_pattern(test[i][0], test[i][1], test[i][2]);
         if ((i != 10 && (i+1) != 4) && (i+1) != categ)
         {
             qDebug() << 1 << i+1 << " - " << categ;
         }
-        sort(test[i][0], test[i][2], test[i][1]);
+        classify_pattern(test[i][0], test[i][2], test[i][1]);
         if ((i != 10 && (i+1) != 4) && (i+1) != categ)
         {
             qDebug() << 2 << i+1 << " - " << categ;
         }
-        sort(test[i][1], test[i][2], test[i][0]);
+        classify_pattern(test[i][1], test[i][2], test[i][0]);
         if ((i != 10 && (i+1) != 4) && (i+1) != categ)
         {
             qDebug() << 3 << i+1 << " - " << categ;
         }
-        sort(test[i][1], test[i][0], test[i][2]);
+        classify_pattern(test[i][1], test[i][0], test[i][2]);
         if ((i != 10 && (i+1) != 4) && (i+1) != categ)
         {
             qDebug() << 4 << i+1 << " - " << categ;
         }
-        sort(test[i][2], test[i][1], test[i][0]);
+        classify_pattern(test[i][2], test[i][1], test[i][0]);
         if ((i != 10 && (i+1) != 4) && (i+1) != categ)
         {
             qDebug() << 5 << i+1 << " - " << categ;
         }
-        sort(test[i][2], test[i][0], test[i][1]);
+        classify_pattern(test[i][2], test[i][0], test[i][1]);
         if ((i != 10 && (i+1) != 4) && (i+1) != categ)
         {
             qDebug()<< 6 << i+1 << " - " << categ;
@@ -584,9 +584,9 @@ QSet<int> MainWindow::evaluate(QString str)
     if (str[0] == "%")
     {
         p = str.indexOf("%", 1);
+        QString s = str.mid(1, p-1);
         a = eval[str.mid(1, p-1).toInt()];
         apath = vector_path[str.mid(1, p-1).toInt()];
-        qDebug() << str.mid(1, p-1);
     }
     else
     {
@@ -607,7 +607,7 @@ QSet<int> MainWindow::evaluate(QString str)
         }
 
     }
-    if (str.size() == 1)
+    if (not (str.indexOf("&") != -1 || str.indexOf("|") != -1 || str.indexOf("\\") != -1))
     {
         ans = a;
         anspath = apath;
@@ -616,9 +616,12 @@ QSet<int> MainWindow::evaluate(QString str)
     {
         if (str[p+2] == "%")
         {
-            p = str.indexOf("%", p+3);
-            b = eval[str.mid(1, p+1).toInt()];
-            bpath = vector_path[str.mid(1, p+1).toInt()];
+            int t = p+3;
+            p = str.indexOf("%", p+3) - p+2;
+            // Костыль
+            QString s = str.mid(t, 1);
+            b = eval[str.mid(t, 1).toInt()];
+            bpath = vector_path[str.mid(t, 1).toInt()];
 //            qDebug() << str.mid(1, p+1);
         }
         else
@@ -695,6 +698,7 @@ void MainWindow::on_pushButton_calc_clicked()
     std::sort(temp.begin(), temp.end());
     QString str = "";
     foreach (auto e, temp) str += QString::number(e) + " ";
+    str = str.trimmed();
     str = "D = {" + str + "}";
     ui->label_d->setText(str);
 }
