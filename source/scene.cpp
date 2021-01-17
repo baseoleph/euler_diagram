@@ -103,7 +103,7 @@ void Scene::setCircles(QSet<int> A, QSet<int> B, QSet<int> C, int categ)
     else if (categ == 14) cat14();
     else if (categ == 15) cat15();
     else if (categ == 16) cat16();
-    else qDebug() << "bad category: " << categ;
+//    else qDebug() << "bad category: " << categ;
 }
 
 void Scene::updateText()

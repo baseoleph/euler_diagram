@@ -30,7 +30,14 @@
        <item>
         <widget class="QLabel" name="label_13">
          <property name="text">
-          <string>Элементы множества через пробел</string>
+          <string>Элементы множества через</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>пробел</string>
          </property>
         </widget>
        </item>
@@ -215,7 +222,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
